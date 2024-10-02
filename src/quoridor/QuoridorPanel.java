@@ -36,6 +36,7 @@ public class QuoridorPanel extends JPanel{
         super.paintComponent(g);
         drawBoard(g);
         drawWalls(g);
+        drawPlayer(g);
     }
 
     private void drawBoard(Graphics g) {
@@ -57,6 +58,11 @@ public class QuoridorPanel extends JPanel{
                 g.fillRect(x - WALL_THICKNESS / 2, y, WALL_THICKNESS, CELL_SIZE * 2);
             }
         }
+    }
+
+    private void drawPlayer(Graphics g){
+        g.setColor(Color.GREEN);
+        g.fillOval(CELL_SIZE*4 ,CELL_SIZE*4,25,25);
     }
 
     public void addWall(int x, int y, boolean isHorizontal) {
@@ -113,7 +119,7 @@ public class QuoridorPanel extends JPanel{
         if (horizontalWalls[y][x] || (x > 0 && horizontalWalls[y][x-1]) || (x < BOARD_SIZE - 2 && horizontalWalls[y][x+1])) {
             return false;
         }
-        if (verticalWalls[y][x] || verticalWalls[y][x+1]) {
+        if (verticalWalls[y][x] || verticalWalls[y][x+1] || verticalWalls[y-1][x+1]) {
             return false;
         }
 
@@ -140,7 +146,7 @@ public class QuoridorPanel extends JPanel{
         if (verticalWalls[y][x] || (y > 0 && verticalWalls[y-1][x]) || (y < BOARD_SIZE - 2 && verticalWalls[y+1][x])) {
             return false;
         }
-        if (horizontalWalls[y][x] || horizontalWalls[y+1][x]) {
+        if (horizontalWalls[y][x] || horizontalWalls[y+1][x] || horizontalWalls[y-1][x+1]) {
             return false;
         }
 
