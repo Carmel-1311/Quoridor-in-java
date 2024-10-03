@@ -19,8 +19,8 @@ public class QuoridorPanel extends JPanel{
     //wall click sensitivity
     private static final int CLICK_TOLERANCE = 10;
 
-    private boolean[][] horizontalWalls = new boolean[BOARD_SIZE + 2][BOARD_SIZE+1];
-    private boolean[][] verticalWalls = new boolean[BOARD_SIZE+1][BOARD_SIZE + 2];
+    private boolean[][] horizontalWalls = new boolean[BOARD_SIZE][BOARD_SIZE];
+    private boolean[][] verticalWalls = new boolean[BOARD_SIZE][BOARD_SIZE];
 
 	
 
@@ -149,7 +149,7 @@ public class QuoridorPanel extends JPanel{
 
     private boolean canPlaceHorizontalWall(int x,int y){
         // Check board boundaries
-        if (x < 0 || x >= BOARD_SIZE - 1 || y < 0 || y >= BOARD_SIZE - 1) {
+        if (x < 0 || x >= BOARD_SIZE - 1 || y <= 0 || y > BOARD_SIZE - 1) {
             return false;
         }
 
@@ -157,7 +157,7 @@ public class QuoridorPanel extends JPanel{
         if (horizontalWalls[y][x] || (x > 0 && horizontalWalls[y][x-1]) || (x < BOARD_SIZE - 2 && horizontalWalls[y][x+1])) {
             return false;
         }
-        if (verticalWalls[y][x] || verticalWalls[y][x+1] ) {
+        if (verticalWalls[y][x] || verticalWalls[y][x+1] || verticalWalls[y-1][x+1] ) {
             return false;
         }
 
@@ -176,7 +176,7 @@ public class QuoridorPanel extends JPanel{
 
     private boolean canPlaceVerticalWall(int x,int y){
         // Check board boundaries
-        if (x < 0 || x >= BOARD_SIZE - 1 || y < 0 || y >= BOARD_SIZE - 1) {
+        if (x <= 0 || x > BOARD_SIZE - 1 || y < 0 || y >= BOARD_SIZE - 1) {
             return false;
         }
 
@@ -184,7 +184,7 @@ public class QuoridorPanel extends JPanel{
         if (verticalWalls[y][x] || (y > 0 && verticalWalls[y-1][x]) || (y < BOARD_SIZE - 2 && verticalWalls[y+1][x])) {
             return false;
         }
-        if (horizontalWalls[y][x] || horizontalWalls[y+1][x]) {
+        if (horizontalWalls[y][x] || horizontalWalls[y+1][x] || horizontalWalls[y+1][x-1]) {
             return false;
         }
 
