@@ -157,7 +157,7 @@ public class QuoridorPanel extends JPanel{
         if (horizontalWalls[y][x] || (x > 0 && horizontalWalls[y][x-1]) || (x < BOARD_SIZE - 2 && horizontalWalls[y][x+1])) {
             return false;
         }
-        if (verticalWalls[y][x] || verticalWalls[y][x+1] || verticalWalls[y-1][x+1] ) {
+        if ( verticalWalls[y][x+1] || verticalWalls[y-1][x+1] ) {
             return false;
         }
 
@@ -184,7 +184,7 @@ public class QuoridorPanel extends JPanel{
         if (verticalWalls[y][x] || (y > 0 && verticalWalls[y-1][x]) || (y < BOARD_SIZE - 2 && verticalWalls[y+1][x])) {
             return false;
         }
-        if (horizontalWalls[y][x] || horizontalWalls[y+1][x] || horizontalWalls[y+1][x-1]) {
+        if (horizontalWalls[y+1][x] || horizontalWalls[y+1][x-1]) {
             return false;
         }
 
