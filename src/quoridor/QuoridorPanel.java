@@ -11,6 +11,8 @@ public class QuoridorPanel extends JPanel{
     private Player player1;
     private Player player2;
     private Player currentPlayer; // ผู้เล่นคนที่กำลังมีสิทธิ์เดิน
+    private boolean gameEnded = false;
+	
     
     private static final int BOARD_SIZE = 9;
     private static final int CELL_SIZE = 50;
@@ -89,7 +91,7 @@ public class QuoridorPanel extends JPanel{
         // Check if click is close to a vertical line
         int cellX = x / CELL_SIZE;
         int cellY = y / CELL_SIZE;
-
+ 	if (gameEnded) return;
         if (e.getButton() == MouseEvent.BUTTON1) {
         	// Clicked near a vertical line
             if (isCloseToVerticalLine(x)) {
@@ -119,6 +121,15 @@ public class QuoridorPanel extends JPanel{
             } else {
                 System.out.println("Invalid move");
             }
+        }
+	if (currentPlayer == player1 && cellY == 0) {
+        	JOptionPane.showMessageDialog(this, "Player 1 Wins!");
+        	gameEnded = true;
+        } 
+    	
+        else if (currentPlayer == player2 && cellY == 8) {
+        	JOptionPane.showMessageDialog(this, "Player 2 Wins!");
+        	gameEnded = true;
         }
     }
    
