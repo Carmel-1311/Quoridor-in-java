@@ -12,7 +12,7 @@ public class QuoridorPanel extends JPanel{
     private Player player2;
     private Player currentPlayer; // ผู้เล่นคนที่กำลังมีสิทธิ์เดิน
     private boolean gameEnded = false;
-    private boolean START = true;
+    private boolean Start = true;
     
     private static final int BOARD_SIZE = 9;
     private static final int CELL_SIZE = 50;
