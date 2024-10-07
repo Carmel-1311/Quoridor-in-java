@@ -12,6 +12,7 @@ public class QuoridorPanel extends JPanel{
     private Player player2;
     private Player currentPlayer; // ผู้เล่นคนที่กำลังมีสิทธิ์เดิน
     private boolean gameEnded = false;
+    private boolean Start = true;
     
     private static final int BOARD_SIZE = 9;
     private static final int CELL_SIZE = 50;
@@ -73,10 +74,13 @@ public class QuoridorPanel extends JPanel{
     	// g.fillOval วงกลม
     	//(ตำเเหน่ง x,ตำเเหน่ง y,wihth,height)   
     	//(ตำเเหน่ง x,y ไว้เช็คตรงกลางของช่องเดินเช่น(x=4,cell_size=50 ===> 4*50/50/4 = 212.5คือตรงกลางเเกนxที่ตัวเดินวางอยู่))
-        g.setColor(Color.BLUE);
+        if(currentPlayer == player1||Start){
+		g.setColor(Color.BLUE);
+	} else g.setColor(Color.GRAY);
         g.fillRect(player1.x * CELL_SIZE + CELL_SIZE / 4 , player1.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        
-        g.setColor(Color.GREEN);
+        if(currentPlayer == player2||Start){
+		g.setColor(Color.GREEN);
+	} else g.setColor(Color.GRAY);
         g.fillRect(player2.x * CELL_SIZE + CELL_SIZE / 4, player2.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
     }
 
@@ -99,16 +103,18 @@ public class QuoridorPanel extends JPanel{
                     placeVerticalWall(cellX, cellY);
                     addWall(cellX, cellY, false);
                     switchPlayer(); // สลับตา
+		    System.out.println("Clicked Vertical Wall" + "(" + cellX + "," + cellY + ")");
                 }
-                System.out.println("Clicked Vertical Wall" + "(" + cellX + "," + cellY + ")");
+                else System.out.println("You Cannot Place Vertical Wall at" + "(" + cellX + "," + cellY + ")");
              // Clicked near a horizontal line
             } else if (isCloseToHorizontalLine(y)) {
                 if (canPlaceHorizontalWall(cellX, cellY)) {
                     placeHorizontalWall(cellX, cellY);
                     addWall(cellX, cellY, true);
                     switchPlayer(); // สลับตา
+		    System.out.println("Clicked Horizontal Wall" + "(" + cellX + "," + cellY + ")");
                 }
-                System.out.println("Clicked Horizontal Wall" + "(" + cellX + "," + cellY + ")");
+                else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
             }
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             // คลิกขวา: เดินผู้เล่น
@@ -117,10 +123,12 @@ public class QuoridorPanel extends JPanel{
                 currentPlayer.y = cellY;
                 switchPlayer(); // สลับตา
                 repaint(); // วาดใหม่หลังเดิน
+		
                 System.out.println("Player moved to " + "(" + cellX + "," + cellY + ")");
             } else {
                 System.out.println("Invalid move");
             }
+	Start = false;
         }
         if (player1.y == 8) {
         	JOptionPane.showMessageDialog(this, "Player 1 Wins!");
