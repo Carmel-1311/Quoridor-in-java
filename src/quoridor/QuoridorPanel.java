@@ -122,12 +122,12 @@ public class QuoridorPanel extends JPanel{
                 System.out.println("Invalid move");
             }
         }
-        if (currentPlayer == player1 && cellY == 0) {
+        if (player1.y == 8) {
         	JOptionPane.showMessageDialog(this, "Player 1 Wins!");
         	gameEnded = true;
         } 
     	
-        else if (currentPlayer == player2 && cellY == 8) {
+        else if (player2.y == 0) {
         	JOptionPane.showMessageDialog(this, "Player 2 Wins!");
         	gameEnded = true;
         }
