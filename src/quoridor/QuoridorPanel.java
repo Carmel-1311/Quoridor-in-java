@@ -116,6 +116,8 @@ public class QuoridorPanel extends JPanel{
                 }
                 else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
             }
+            System.out.println("Clicked Cell" + "(" + cellX + "," + cellY + ")");
+
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             // คลิกขวา: เดินผู้เล่น
             if (isMoveValid(currentPlayer, cellX, cellY)) {
