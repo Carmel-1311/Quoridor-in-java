@@ -82,11 +82,19 @@ public class QuoridorPanel extends JPanel{
 		g.setColor(Color.GREEN);
 	} else g.setColor(Color.decode("#679267"));
         g.fillRect(player2.x * CELL_SIZE + CELL_SIZE / 4, player2.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        g.setColor(Color.GRAY);
-        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4-50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4-50, CELL_SIZE / 2, CELL_SIZE / 2);
-        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4+50 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4+50, CELL_SIZE / 2, CELL_SIZE / 2);
+    g.setColor(Color.GRAY);
+        if(currentPlayer.x<8&&!verticalWalls[currentPlayer.y][currentPlayer.x + 1]){
+            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4+50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
+        }
+        if(!verticalWalls[currentPlayer.y][currentPlayer.x ]){
+            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4-50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
+        }
+        if(currentPlayer.y<8&&!horizontalWalls[currentPlayer.y+1][currentPlayer.x]){
+            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4+50, CELL_SIZE / 2, CELL_SIZE / 2);
+        }
+        if(!horizontalWalls[currentPlayer.y][currentPlayer.x]){
+            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4-50, CELL_SIZE / 2, CELL_SIZE / 2);
+        }
 }
 
     public void addWall(int x, int y, boolean isHorizontal) {
@@ -131,7 +139,7 @@ public class QuoridorPanel extends JPanel{
                 currentPlayer.y = cellY;
                 switchPlayer(); // สลับตา
                 repaint(); // วาดใหม่หลังเดิน
-		
+		        
                 System.out.println("Player moved to " + "(" + cellX + "," + cellY + ")");
             } else {
                 System.out.println("Invalid move");
