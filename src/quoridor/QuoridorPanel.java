@@ -82,7 +82,12 @@ public class QuoridorPanel extends JPanel{
 		g.setColor(Color.GREEN);
 	} else g.setColor(Color.decode("#679267"));
         g.fillRect(player2.x * CELL_SIZE + CELL_SIZE / 4, player2.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-    }
+        g.setColor(Color.GRAY);
+        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4-50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
+        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4-50, CELL_SIZE / 2, CELL_SIZE / 2);
+        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4+50 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
+        g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4 , currentPlayer.y * CELL_SIZE + CELL_SIZE / 4+50, CELL_SIZE / 2, CELL_SIZE / 2);
+}
 
     public void addWall(int x, int y, boolean isHorizontal) {
         walls.add(new Wall(x, y, isHorizontal));
