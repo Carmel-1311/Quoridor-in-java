@@ -182,6 +182,59 @@ public class QuoridorPanel extends JPanel{
                 }
             }
         }
+	// เดินข้ามผู้เล่นอื่น
+        if (dx == 2 && dy == 0) {
+            if (x > player.x) { // ขวา
+                if (player.x + 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x + 2]) return true;
+            } else { // ซ้าย
+                if (player.x - 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x - 1]) return true;
+            }
+        }
+
+        if (dy == 2 && dx == 0) {
+            if (y > player.y) { // ลง
+                if (player.y + 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y + 2][player.x]) return true;
+            } else { // ขึ้น
+                if (player.y - 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y - 1][player.x]) return true;
+            }
+        }
+     // การเดินทแยง
+        if (dx == 1 && dy == 1) {
+	// ตรวจสอบว่าามีผู้เล่นอยู่ตรงหน้าและมีกำแพงขวางหลังไหม
+            if (player.x + 1 == otherPlayer().x && player.y == otherPlayer().y) { // มีผู้เล่นอยู่ทางขวา
+                if (verticalWalls[player.y][player.x + 2]) { // เช็คว่ามีกำแพงข้างหลังผู้เล่นที่จะข้าม
+                    if (y > player.y && !horizontalWalls[player.y + 1][player.x + 1]) { // เดินทแยง-ลงขวา
+                        return true;
+                    } else if (y < player.y && !horizontalWalls[player.y][player.x + 1]) { // เดินทแยง-ขึ้นขวา
+                        return true;
+                    }
+                }
+            } else if (player.x - 1 == otherPlayer().x && player.y == otherPlayer().y) { //มีผู้เล่นอยู่ทางซ้าย
+                if (verticalWalls[player.y][player.x - 1]) {
+                    if (y > player.y && !horizontalWalls[player.y + 1][player.x]) { // เดินทแยง-ลงซ้าย
+                        return true;
+                    } else if (y < player.y && !horizontalWalls[player.y][player.x]) { // เดินทแยง-ขึ้นซ้าย
+                        return true;
+                    }
+                }
+            } else if (player.y + 1 == otherPlayer().y && player.x == otherPlayer().x) { // มีผู้เล่นอยู่ข้างล่าง
+        	if (horizontalWalls[player.y + 2][player.x]) {
+                    if (x > player.x && !verticalWalls[player.y + 1][player.x + 1]) { // เดินทแยง-ลงขวา
+                        return true;
+                    } else if (x < player.x && !verticalWalls[player.y + 1][player.x]) { // เดินทแยง-ลงซ้าย
+                        return true;
+                    }
+                }
+            } else if (player.y - 1 == otherPlayer().y && player.x == otherPlayer().x) { // มีผู้เล่นอยู่ข้างบน
+                if (horizontalWalls[player.y - 1][player.x]) {
+                    if (x > player.x && !verticalWalls[player.y - 1][player.x + 1]) { // เดินทแยง-ขึ้นขวา
+                        return true;
+                    } else if (x < player.x && !verticalWalls[player.y - 1][player.x]) { // เดินทแยง-ขึ้นซ้าย
+                        return true;
+                    }
+                }
+            }
+        }
         return false;//เดินผิดตำเเหน่ง
     }
 
