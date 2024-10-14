@@ -115,7 +115,7 @@ public class QuoridorPanel extends JPanel{
         	    }
         	    else System.out.println("You Cannot Place Vertical Wall at" + "(" + cellX + "," + cellY + ")");
         	}
-        	if (isCloseToHorizontalLine(y)) {
+        	else if (isCloseToHorizontalLine(y)) {
         	    if (canPlaceHorizontalWall(cellX, cellY)) {
         	        placeHorizontalWall(cellX, cellY);
         	        addWall(cellX, cellY, true);
@@ -152,6 +152,7 @@ public class QuoridorPanel extends JPanel{
             }
             System.out.println("Clicked Cell" + "(" + cellX + "," + cellY + ")");
         	 */
+            
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             // คลิกขวา: เดินผู้เล่น
         	if (isMoveValid(currentPlayer, cellX, cellY)) {
@@ -338,7 +339,8 @@ public class QuoridorPanel extends JPanel{
             return false;
         }
 
-        if(verticalWalls[y-1][x+1] && !verticalWalls[y][x+1]){
+        if((verticalWalls[y-1][x+1] && !verticalWalls[y][x+1]) 
+        || (y-1 > 0 && y+1 < BOARD_SIZE && verticalWalls[y-2][x+1] && verticalWalls[y-1][x+1] && verticalWalls[y][x+1] && verticalWalls[y+1][x+1])){
             return true;
         }
         
@@ -361,9 +363,12 @@ public class QuoridorPanel extends JPanel{
             return false;
         }
         
-        if(horizontalWalls[y+1][x-1] && !horizontalWalls[y+1][x]){
+        if(horizontalWalls[y+1][x-1] && !horizontalWalls[y+1][x]
+        || (x-1 > 0 && x+1 < BOARD_SIZE && horizontalWalls[y+1][x-2] && horizontalWalls[y+1][x-1] && horizontalWalls[y+1][x] && horizontalWalls[y+1][x+1])){
             return true;
         }
+
+        
 
         // Check for intersection with horizontal walls
         if (horizontalWalls[y+1][x-1]) {
