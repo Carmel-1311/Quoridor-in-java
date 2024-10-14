@@ -1,18 +1,22 @@
 package quoridor;
 import javax.swing.*;
+import java.awt.*;
 
 public class QuoridorMain extends JFrame {
     private QuoridorPanel gamePanel;
+    private StatusPanel statusPanel;
 
     public QuoridorMain() {
         setTitle("Quoridor");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
         gamePanel = new QuoridorPanel();
-        add(gamePanel);
-
+        statusPanel = new StatusPanel();
+        add(gamePanel, BorderLayout.CENTER);
+        add(statusPanel, BorderLayout.EAST);
         pack();
     }
 
