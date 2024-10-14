@@ -2,9 +2,9 @@ package quoridor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class QuoridorPanel extends JPanel{
     private List<Wall> walls;
@@ -82,19 +82,7 @@ public class QuoridorPanel extends JPanel{
 		g.setColor(Color.GREEN);
 	} else g.setColor(Color.decode("#679267"));
         g.fillRect(player2.x * CELL_SIZE + CELL_SIZE / 4, player2.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-    g.setColor(Color.GRAY);
-        if(currentPlayer.x<8&&!verticalWalls[currentPlayer.y][currentPlayer.x + 1]){
-            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4+50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        }
-        if(!verticalWalls[currentPlayer.y][currentPlayer.x ]){
-            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4-50, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2);
-        }
-        if(currentPlayer.y<8&&!horizontalWalls[currentPlayer.y+1][currentPlayer.x]){
-            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4+50, CELL_SIZE / 2, CELL_SIZE / 2);
-        }
-        if(!horizontalWalls[currentPlayer.y][currentPlayer.x]){
-            g.fillRect(currentPlayer.x * CELL_SIZE + CELL_SIZE / 4, currentPlayer.y * CELL_SIZE + CELL_SIZE / 4-50, CELL_SIZE / 2, CELL_SIZE / 2);
-        }
+  
 }
 
     public void addWall(int x, int y, boolean isHorizontal) {
@@ -112,6 +100,38 @@ public class QuoridorPanel extends JPanel{
         if (gameEnded) return;
         if (e.getButton() == MouseEvent.BUTTON1) {
         	// Clicked near a vertical line
+        	if (isCloseToVerticalLine(x)) {
+        	    if (canPlaceVerticalWall(cellX, cellY)) {
+        	        placeVerticalWall(cellX, cellY);
+        	        addWall(cellX, cellY, false);
+        	        
+        	        if (!isPathAvailable(otherPlayer())) {
+        	            JOptionPane.showMessageDialog(this, "Player " + (currentPlayer == player1 ? "2" : "1") + " Wins! (Path Blocked)");
+        	            gameEnded = true;
+        	        } else {
+        	            switchPlayer(); // สลับตา
+        	            System.out.println("Clicked Vertical Wall" + "(" + cellX + "," + cellY + ")");
+        	        }
+        	    }
+        	    else System.out.println("You Cannot Place Vertical Wall at" + "(" + cellX + "," + cellY + ")");
+        	}
+        	if (isCloseToHorizontalLine(y)) {
+        	    if (canPlaceHorizontalWall(cellX, cellY)) {
+        	        placeHorizontalWall(cellX, cellY);
+        	        addWall(cellX, cellY, true);
+        	        
+        	        if (!isPathAvailable(otherPlayer())) {
+        	            JOptionPane.showMessageDialog(this, "Player " + (currentPlayer == player1 ? "2" : "1") + " Wins! (Path Blocked)");
+        	            gameEnded = true;
+        	        } else {
+        	            switchPlayer(); // สลับตา
+        	            System.out.println("Clicked Horizontal Wall" + "(" + cellX + "," + cellY + ")");
+        	        }
+        	    }
+        	    else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
+        	}
+
+        	/*
             if (isCloseToVerticalLine(x)) {
                 if (canPlaceVerticalWall(cellX, cellY)) {
                     placeVerticalWall(cellX, cellY);
@@ -131,10 +151,10 @@ public class QuoridorPanel extends JPanel{
                 else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
             }
             System.out.println("Clicked Cell" + "(" + cellX + "," + cellY + ")");
-
+        	 */
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             // คลิกขวา: เดินผู้เล่น
-            if (isMoveValid(currentPlayer, cellX, cellY)) {
+        	if (isMoveValid(currentPlayer, cellX, cellY)) {
                 currentPlayer.x = cellX;
                 currentPlayer.y = cellY;
                 switchPlayer(); // สลับตา
@@ -169,7 +189,9 @@ public class QuoridorPanel extends JPanel{
         // ตรวจสอบตำแหน่งปัจจุบันของผู้เล่น
         int dx = Math.abs(player.x - x);
         int dy = Math.abs(player.y - y);
-    
+        if (x == otherPlayer().x && y == otherPlayer().y) {
+            return false; // ไม่อนุญาตให้เดินไปทับตำแหน่งที่มีผู้เล่นคนอื่นอยู่
+        }
         // ตรวจสอบว่ากำลังเดินในแนวนอนหรือแนวตั้งที่ห่างกัน 1 ช่อง
         if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) {
             if (dx == 1) { // การเคลื่อนที่ในแนวนอน
@@ -193,17 +215,17 @@ public class QuoridorPanel extends JPanel{
 	// เดินข้ามผู้เล่นอื่น
         if (dx == 2 && dy == 0) {
             if (x > player.x) { // ขวา
-                if (player.x + 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x + 2]) return true;
+                if (player.x + 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x + 2] && !verticalWalls[player.y][player.x + 1]) return true;
             } else { // ซ้าย
-                if (player.x - 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x - 1]) return true;
+                if (player.x - 1 == otherPlayer().x && player.y == otherPlayer().y && !verticalWalls[player.y][player.x - 1] && !verticalWalls[player.y][player.x]) return true;
             }
         }
 
         if (dy == 2 && dx == 0) {
             if (y > player.y) { // ลง
-                if (player.y + 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y + 2][player.x]) return true;
+                if (player.y + 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y + 2][player.x] && !horizontalWalls[player.y + 1][player.x]) return true;
             } else { // ขึ้น
-                if (player.y - 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y - 1][player.x]) return true;
+                if (player.y - 1 == otherPlayer().y && player.x == otherPlayer().x && !horizontalWalls[player.y - 1][player.x] && !horizontalWalls[player.y][player.x]) return true;
             }
         }
      // การเดินทแยง
@@ -252,6 +274,49 @@ public class QuoridorPanel extends JPanel{
         } else {
             currentPlayer = player1;
         }
+    }
+    
+    private boolean isPathAvailable(Player player) {
+        boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        return bfs(player, visited);
+    }
+
+    private boolean bfs(Player player, boolean[][] visited) {
+        // ใช้ Queue สำหรับการ BFS
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(new Point(player.x, player.y));
+        visited[player.y][player.x] = true;
+
+        while (!queue.isEmpty()) {
+            Point current = queue.poll();
+            
+            // ตรวจสอบว่า player ถึงเส้นชัยหรือยัง
+            if (player == player1 && current.y == BOARD_SIZE - 1) {
+                return true; // player1 ไปถึงเส้นชัย
+            }
+            if (player == player2 && current.y == 0) {
+                return true; // player2 ไปถึงเส้นชัย
+            }
+
+            // ตรวจสอบช่องทางที่สามารถเดินไปได้ (ขึ้น, ลง, ซ้าย, ขวา)
+            if (current.x > 0 && !verticalWalls[current.y][current.x] && !visited[current.y][current.x - 1]) { // ซ้าย
+                queue.add(new Point(current.x - 1, current.y));
+                visited[current.y][current.x - 1] = true;
+            }
+            if (current.x < BOARD_SIZE - 1 && !verticalWalls[current.y][current.x + 1] && !visited[current.y][current.x + 1]) { // ขวา
+                queue.add(new Point(current.x + 1, current.y));
+                visited[current.y][current.x + 1] = true;
+            }
+            if (current.y > 0 && !horizontalWalls[current.y][current.x] && !visited[current.y - 1][current.x]) { // ขึ้น
+                queue.add(new Point(current.x, current.y - 1));
+                visited[current.y - 1][current.x] = true;
+            }
+            if (current.y < BOARD_SIZE - 1 && !horizontalWalls[current.y + 1][current.x] && !visited[current.y + 1][current.x]) { // ลง
+                queue.add(new Point(current.x, current.y + 1));
+                visited[current.y + 1][current.x] = true;
+            }
+        }
+        return false; // ไม่มีทางไปถึงเส้นชัย
     }
     
     private boolean isCloseToVerticalLine(int x) {
