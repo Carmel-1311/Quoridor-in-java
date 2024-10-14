@@ -130,29 +130,7 @@ public class QuoridorPanel extends JPanel{
         	    }
         	    else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
         	}
-
-        	/*
-            if (isCloseToVerticalLine(x)) {
-                if (canPlaceVerticalWall(cellX, cellY)) {
-                    placeVerticalWall(cellX, cellY);
-                    addWall(cellX, cellY, false);
-                    switchPlayer(); // สลับตา
-		    System.out.println("Clicked Vertical Wall" + "(" + cellX + "," + cellY + ")");
-                }
-                else System.out.println("You Cannot Place Vertical Wall at" + "(" + cellX + "," + cellY + ")");
-             // Clicked near a horizontal line
-            } else if (isCloseToHorizontalLine(y)) {
-                if (canPlaceHorizontalWall(cellX, cellY)) {
-                    placeHorizontalWall(cellX, cellY);
-                    addWall(cellX, cellY, true);
-                    switchPlayer(); // สลับตา
-		    System.out.println("Clicked Horizontal Wall" + "(" + cellX + "," + cellY + ")");
-                }
-                else System.out.println("You Cannot Place Horizontal Wall at" + "(" + cellX + "," + cellY + ")");
-            }
-            System.out.println("Clicked Cell" + "(" + cellX + "," + cellY + ")");
-        	 */
-            
+         
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             // คลิกขวา: เดินผู้เล่น
         	if (isMoveValid(currentPlayer, cellX, cellY)) {
@@ -339,11 +317,17 @@ public class QuoridorPanel extends JPanel{
             return false;
         }
 
-        if((verticalWalls[y-1][x+1] && !verticalWalls[y][x+1]) 
-        || (y-1 > 0 && y+1 < BOARD_SIZE && verticalWalls[y-2][x+1] && verticalWalls[y-1][x+1] && verticalWalls[y][x+1] && verticalWalls[y+1][x+1])){
+        int verticalWallDownward = 0;
+        for (int i = y; i < BOARD_SIZE; i++){
+            if(verticalWalls[i][x+1]){
+                verticalWallDownward++;
+            }
+        }
+
+        if(verticalWallDownward % 2 == 0){
             return true;
         }
-        
+
         // Check for intersection with vertical walls
         if (verticalWalls[y-1][x+1]) {
             return false;
@@ -365,6 +349,17 @@ public class QuoridorPanel extends JPanel{
         
         if(horizontalWalls[y+1][x-1] && !horizontalWalls[y+1][x]
         || (x-1 > 0 && x+1 < BOARD_SIZE && horizontalWalls[y+1][x-2] && horizontalWalls[y+1][x-1] && horizontalWalls[y+1][x] && horizontalWalls[y+1][x+1])){
+            return true;
+        }
+
+        int horizontalWallRightward = 0;
+        for (int i = x; i < BOARD_SIZE; i++){
+            if(horizontalWalls[y+1][i]){
+                horizontalWallRightward++;
+            }
+        }
+
+        if(horizontalWallRightward % 2 == 0){
             return true;
         }
 
