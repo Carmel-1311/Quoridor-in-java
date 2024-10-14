@@ -347,11 +347,6 @@ public class QuoridorPanel extends JPanel{
             return false;
         }
         
-        if(horizontalWalls[y+1][x-1] && !horizontalWalls[y+1][x]
-        || (x-1 > 0 && x+1 < BOARD_SIZE && horizontalWalls[y+1][x-2] && horizontalWalls[y+1][x-1] && horizontalWalls[y+1][x] && horizontalWalls[y+1][x+1])){
-            return true;
-        }
-
         int horizontalWallRightward = 0;
         for (int i = x; i < BOARD_SIZE; i++){
             if(horizontalWalls[y+1][i]){
