@@ -201,57 +201,41 @@ public class QuoridorPanel extends JPanel{
         return Math.abs(y % CELL_SIZE) < CLICK_TOLERANCE;
     }
 
-    private boolean canPlaceHorizontalWall(int x,int y){
+    private boolean canPlaceHorizontalWall(int x, int y) {
         // Check board boundaries
-        if (x < 0 || x >= BOARD_SIZE - 1 || y <= 0 || y > BOARD_SIZE - 1) {
+        if (x < 0 || x >= BOARD_SIZE - 1 || y <= 0 || y >= BOARD_SIZE) {
             return false;
         }
-
-        // Check for overlap with existing walls
-        if (horizontalWalls[y][x] || (x > 0 && horizontalWalls[y][x-1]) || (x < BOARD_SIZE - 2 && horizontalWalls[y][x+1])) {
+        
+        // Check for overlap with existing horizontal walls
+        if (horizontalWalls[y][x] || horizontalWalls[y][x+1]) {
             return false;
         }
-        if ( verticalWalls[y+1][x] || verticalWalls[y-1][x+1] ) {
+        
+        // Check for intersection with vertical walls
+        if (verticalWalls[y][x+1]) {
             return false;
         }
-
-        // Temporarily place the wall
-        // horizontalWalls[y][x] = true;
-
-        // // Check if all players still have a path to their goal
-        // boolean pathExists = checkPathsExist();
-
-        // // Remove the temporary wall
-        // horizontalWalls[y][x] = false;
-
-        // return pathExists;
+        
         return true;
     }
 
-    private boolean canPlaceVerticalWall(int x,int y){
+    private boolean canPlaceVerticalWall(int x, int y) {
         // Check board boundaries
-        if (x <= 0 || x > BOARD_SIZE - 1 || y < 0 || y >= BOARD_SIZE - 1) {
+        if (x <= 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE - 1) {
             return false;
         }
-
-        // Check for overlap with existing walls
-        if (verticalWalls[y][x] || (y > 0 && verticalWalls[y-1][x]) || (y < BOARD_SIZE - 2 && verticalWalls[y+1][x])) {
+        
+        // Check for overlap with existing vertical walls
+        if (verticalWalls[y][x] || verticalWalls[y+1][x]) {
             return false;
         }
-        if (horizontalWalls[y+1][x] || horizontalWalls[y+1][x-1]) {
+        
+        // Check for intersection with horizontal walls
+        if (horizontalWalls[y+1][x]) {
             return false;
         }
-
-        // // Temporarily place the wall
-        // verticalWalls[y][x] = true;
-
-        // // Check if all players still have a path to their goal
-        // boolean pathExists = checkPathsExist();
-
-        // // Remove the temporary wall
-        // verticalWalls[y][x] = false;
-
-        //return pathExists;
+        
         return true;
     }
 
@@ -264,6 +248,5 @@ public class QuoridorPanel extends JPanel{
         verticalWalls[y][x] = true;
         verticalWalls[y+1][x] = true;
     }
-
 
 }
