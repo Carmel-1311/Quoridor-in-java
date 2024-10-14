@@ -337,9 +337,13 @@ public class QuoridorPanel extends JPanel{
         if (horizontalWalls[y][x] || horizontalWalls[y][x+1]) {
             return false;
         }
+
+        if(verticalWalls[y-1][x+1] && !verticalWalls[y][x+1]){
+            return true;
+        }
         
         // Check for intersection with vertical walls
-        if (verticalWalls[y][x+1]) {
+        if (verticalWalls[y-1][x+1]) {
             return false;
         }
         
@@ -357,10 +361,16 @@ public class QuoridorPanel extends JPanel{
             return false;
         }
         
+        if(horizontalWalls[y+1][x-1] && !horizontalWalls[y+1][x]){
+            return true;
+        }
+
         // Check for intersection with horizontal walls
-        if (horizontalWalls[y+1][x]) {
+        if (horizontalWalls[y+1][x-1]) {
             return false;
         }
+
+        
         
         return true;
     }
